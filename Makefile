@@ -26,6 +26,8 @@ GO_TEST_FLAGS ?= -race
 # directory to output build
 DIST_DIR=./dist
 
+TAG ?= $(shell git describe --abbrev=0)
+
 # export GOPATH
 export GOPATH := $(shell go env GOPATH)
 
@@ -97,6 +99,14 @@ fmt:
 build:
 	go build --ldflags="-s -w" -o $(DIST_DIR)/ghz ./cmd/ghz/...
 	go build --ldflags="-s -w" -o $(DIST_DIR)/ghz-web ./cmd/ghz-web/...
+
+xgo:
+	CGO_ENABLED=1 xgo -targets 'linux/amd64' -ldflags '-s -w -X main.version=$(TAG)' -dest ./dist github.com/bojand/ghz/cmd/ghz-web
+	# mkdir ./dist/ghz-web_linux_amd64 && mv ./dist/ghz-web-linux-amd64 ./dist/ghz-web_linux_amd64/ghz-web
+	mv ./dist/ghz-web-linux-amd64 ./dist/ghz_linux_amd64/ghz-web
+	CGO_ENABLED=1 xgo -targets 'windows/amd64' -ldflags '-s -w -X main.version=$(TAG)' -dest ./dist github.com/bojand/ghz/cmd/ghz-web
+	# mkdir ./dist/ghz-web_windows_amd64 && mv ./dist/ghz-web-windows-4.0-amd64.exe ./dist/ghz-web_windows_amd64/ghz-web.exe
+	mv ./dist/ghz-web-windows-4.0-amd64.exe ./dist/ghz_windows_amd64/ghz-web.exe
 
 # Cover runs go_test on GO_PKGS and produces code coverage in multiple formats.
 # A coverage.html file for human viewing will be at $(TMP_COVERAGE)/coverage.html

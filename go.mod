@@ -16,6 +16,7 @@ require (
 	github.com/jhump/protoreflect v1.5.0
 	github.com/jinzhu/configor v1.1.1
 	github.com/jinzhu/gorm v1.9.11
+	github.com/karalabe/xgo v0.0.0-20191115072854-c5ccff8648a7 // indirect
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/gommon v0.3.0
 	github.com/leodido/go-urn v1.2.0 // indirect

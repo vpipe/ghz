@@ -11,21 +11,30 @@ builds:
     goarch:
       - amd64
   - id: ghz-web
+    hooks:
+      post: make xgo
     main: ./cmd/ghz-web
     binary: ghz-web
+    env:
+      # https://medium.com/travis-on-docker/how-to-cross-compile-go-programs-using-docker-beaa102a316d
+      - CGO_ENABLED=1
     goos:
       - darwin
-      - linux
-      - windows
     goarch:
       - amd64
 archives:
   - id: ghz
-    replacements:
-      darwin: Darwin
-      linux: Linux
-      windows: Windows
-      amd64: x86_64
+    # replacements:
+    #   darwin: Darwin
+    #   linux: Linux
+    #   windows: Windows
+    #   amd64: x86_64
+    # files:
+    #   - LICENCE*
+    #   - LICENSE*
+    #   - README*
+    #   - CHANGELOG*
+    #   - dist/ghz-web_{{ .Os }}_{{ .Arch }}/*
 checksum:
   name_template: 'checksums.txt'
 snapshot:
