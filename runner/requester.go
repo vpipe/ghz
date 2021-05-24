@@ -336,6 +336,8 @@ func (b *Requester) newClientConn(withStatsHandler bool) (*grpc.ClientConn, erro
 		opts = append(opts, grpc.WithBalancerName(b.config.lbStrategy))
 	}
 
+	opts = append(opts, b.config.extraOpts...)
+
 	// create client connection
 	return grpc.DialContext(ctx, b.config.host, opts...)
 }

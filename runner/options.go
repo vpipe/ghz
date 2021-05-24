@@ -5,6 +5,7 @@ import (
 	"crypto/x509"
 	"encoding/json"
 	"fmt"
+	"google.golang.org/grpc"
 	"io"
 	"io/ioutil"
 	"math"
@@ -127,6 +128,8 @@ type RunConfig struct {
 	skipFirst   int
 	countErrors bool
 	recvMsgFunc StreamRecvMsgInterceptFunc
+
+	extraOpts []grpc.DialOption
 }
 
 // Option controls some aspect of run
@@ -1026,6 +1029,14 @@ func WithMetadataProvider(fn MetadataProviderFunc) Option {
 func WithStreamMessageProvider(fn StreamMessageProviderFunc) Option {
 	return func(o *RunConfig) error {
 		o.dataStreamFunc = fn
+
+		return nil
+	}
+}
+
+func WithExtraGrpcOptions(extraOpts ...grpc.DialOption) Option {
+	return func(o *RunConfig) error {
+		o.extraOpts = extraOpts
 
 		return nil
 	}
